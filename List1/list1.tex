@@ -1,0 +1,82 @@
+\documentclass{beamer}
+\usetheme{Boadilla}
+\usepackage{algorithm,algorithmic}
+\usepackage{hyperref}
+\title{CSCI 5610 Solutions to Exercises(List 1)}
+\author{Anonymous}
+\begin{document} 
+\begin{frame}
+    \titlepage
+\end{frame}
+\begin{frame}
+	\frametitle{Lecture 2: Problem 1}
+	1. For the $(-\infty,y)$ case: \\
+	\begin{enumerate}
+		\item Initially, $ \Sigma = \Phi \ $, and set $ u $ to the root of $ T $ .
+		\item If the key of $ u $ equals $ x $, then add $slab(lc(u)))$ to $ \Sigma $, and stop. (lc: left child,rc: right child)
+		\item If the key of $ u  <  x $, then add $slab(lc(u)))$ to $ \Sigma $, and let $u = rc(u)$.
+		\item If the key of $ u  >  x $, let $u = lc(u)$, repeat from 2.
+	\end{enumerate}
+	2. For the $ [x, y) $ case, we calculate canonical slabs of $ [x, \infty] $ and $ (-\infty,y).$ Then we remove the two unbounded intervals containing $ \infty  $ and $ -\infty $.
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Lecture 2: Problem 2}
+	Construct a BST on the age of people with each node u containing the following additional information:(1) the range of ages covered in the subtree rooted on $ u $, namely l, r; (2) the maximum salary in the subtree rooted on u.\\
+	For a query $ [x,y] $, we will handle it in a recursive way:
+	\begin{algorithm}[H]
+		\begin{algorithmic}[1]
+			\IF{$y < u.l$ \OR $x > u.r$} \STATE {return $-\infty$} \ENDIF
+			\IF{$ x \leq u.l $ \AND $ y \geq u.r $} \STATE {return u.maxSalary} \ENDIF
+			\IF{($ x \geq u.l $ \AND $ x \leq u.r $) \OR ($ y \geq u.l $ \AND $ y \leq u.r $)} \STATE {return max(queryMax(lc(u), x, y),queryMax(rc(u), x, y) ))} \ENDIF
+		\end{algorithmic}
+		\caption{queryMax(u,x,y)}
+		
+	\end{algorithm}
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Lecture 2: Problem 2 Con't}
+	As for the query time of O(log n), we can see that no more than 4 nodes will be visited at each level and there are O(log n) levels in total. (\href{https://www.quora.com/How-do-we-prove-that-the-time-complexity-of-the-update-and-query-operations-in-a-segment-tree-are-Theta-lg-n}{Click here for reference} )
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Lecture 2: Problem 3}
+	In each node u, we store the size of the subtrees rooted on lc(u) and rc(u) as l\_cnt and r\_cnt correspondingly. In order to find the k-th largest element in S, we define the following function:
+		\begin{algorithm}[H]
+		\begin{algorithmic}[1]
+			\IF{$u.l\_cnt \geq k$ } \STATE {return find\_kth\_largest(lc(u),k)} \ENDIF
+			\IF{$u.l\_cnt + 1 == k$ } \STATE {return u.key} \ENDIF
+			\IF{$u.l\_cnt + 1 \leq k$ } \STATE {return find\_kth\_largest(rc(u),k-(u.l\_cnt + 1))} \ENDIF
+		\end{algorithmic}
+		\caption{find\_kth\_largest(u,k)}
+		
+	\end{algorithm}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Lecture 2: Problem 4}
+	To get a 2-3 tree on the set S\textbackslash [x,y], we can use the existing split and join functions. 
+	\begin{enumerate}
+		\item Use x to split S into $ S_1 $ and $ S_2$. All the values in $ S_1 $ is smaller than x. We get a 2-3 tree on $ S_1 $ and a 2-3 tree on $ S_2 $. 
+		\item Use y to split $ S_2 $ into $ S_{21} $ and $ S_{22} $ in the same way. 
+		\item Delete y in the 2-3 tree on $ S_{22} $ if it exists.
+		\item Join $ S_1 $ and $ S_{22} $ to get a 2-3 tree on set S\textbackslash [x,y]
+	\end{enumerate} 
+	
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Lecture 2: Problem 5*(optional)}
+	
+	
+\end{frame}
+
+\end{document}
